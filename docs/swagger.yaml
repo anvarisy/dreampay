@@ -1,0 +1,235 @@
+definitions:
+  models.Account:
+    properties:
+      account_mobile:
+        type: string
+      account_name:
+        type: string
+      account_status:
+        type: string
+      is_active:
+        type: boolean
+    type: object
+  models.AccountLogin:
+    properties:
+      account_mobile:
+        type: string
+    type: object
+  models.AccountRegister:
+    properties:
+      account_mobile:
+        type: string
+      account_name:
+        type: string
+      account_status:
+        type: string
+    type: object
+  models.AccountVerification:
+    properties:
+      account_mobile:
+        type: string
+    type: object
+  models.Transaction:
+    properties:
+      id:
+        type: integer
+      is_debit:
+        type: boolean
+      transaction_amount:
+        type: integer
+      transaction_date:
+        type: string
+      transaction_depositor:
+        type: string
+      transaction_receiver:
+        type: string
+      transactionName:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/account:
+    get:
+      consumes:
+      - application/json
+      description: '-'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Account'
+            type: array
+      summary: '-'
+      tags:
+      - Get Account
+  /api/delete/{mobile}:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Delete Account
+      parameters:
+      - description: mobile
+        in: path
+        name: mobile
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Account'
+      summary: Delete Account
+      tags:
+      - Delete Account
+  /api/login:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Login Account
+      parameters:
+      - description: Account Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountLogin'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.AccountLogin'
+      summary: Login Account
+      tags:
+      - Login Account
+  /api/register:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Create New Account
+      parameters:
+      - description: Account Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountRegister'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AccountRegister'
+      summary: Create New Account
+      tags:
+      - Create Account
+  /api/transaction:
+    get:
+      consumes:
+      - application/json
+      description: API URL For All Transaction
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: All Transaction
+      tags:
+      - All Transaction
+    post:
+      consumes:
+      - application/json
+      description: API URL For Create Transaction
+      parameters:
+      - description: Transaction Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.Transaction'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Create Transaction
+      tags:
+      - Create Transaction
+  /api/transaction/{id}:
+    get:
+      consumes:
+      - application/json
+      description: API URL For Transaction Account
+      parameters:
+      - description: mobile
+        in: path
+        name: mobile
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Transaction'
+      summary: Transaction Per Account
+      tags:
+      - Transaction Per Account
+  /api/update/{account_mobile}:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Update Account
+      parameters:
+      - description: Account Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.Account'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.Account'
+      summary: Update Account
+      tags:
+      - Update Account
+  /api/verification:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Verification Account
+      parameters:
+      - description: Account Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountVerification'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/models.AccountVerification'
+      summary: Verification Account
+      tags:
+      - Verification Account
+swagger: "2.0"
