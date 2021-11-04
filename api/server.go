@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -18,6 +19,7 @@ func init() {
 }
 
 func Run() {
+	gin.SetMode(gin.ReleaseMode)
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error load environment, %v", err)
