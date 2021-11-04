@@ -9,14 +9,22 @@ import (
 type Transaction struct {
 	ID                   uint           `gorm:"primaryKey" json:"id" form:"id"`
 	TransactionName      string         `gorm:"transaction_name" form:"transaction_name"`
-	TransactionReceiver  string         `json:"transaction_receiver" form:"transaction_receiver"`
-	TransactionDepositor string         `json:"transaction_depositor" form:"transaction_depositor"`
+	TransactionReceiver  string         `gorm:"size:16; index" json:"transaction_receiver" form:"transaction_receiver"`
+	DReceiver            Account        `gorm:"foreignKey:TransactionReceiver"`
+	TransactionDepositor string         `gorm:"size:16; index" json:"transaction_depositor" form:"transaction_depositor"`
+	DDepositor           Account        `gorm:"foreignKey:TransactionDepositor"`
 	TransactionAmount    int64          `json:"transaction_amount" form:"transaction_amount"`
 	TransactionDate      time.Time      `time_format:"2006-01-02" json:"transaction_date" form:"transaction_date"`
 	IsDebit              bool           `json:"is_debit" form:"is_debit"`
 	CreatedAt            time.Time      `json:"-"`
 	UpdatedAt            time.Time      `json:"-"`
 	DeletedAt            gorm.DeletedAt `gorm:"index" json:"-"`
+}
+
+type MoneyStatus struct {
+	UangBuyer  int64 `json:"uang_buyer"`
+	UangSeller int64 `json:"uang_seller"`
+	UangSisa   int64 `json:"uang_sisa"`
 }
 
 func (t *Transaction) CreateTransaction(db *gorm.DB) (*Transaction, error) {

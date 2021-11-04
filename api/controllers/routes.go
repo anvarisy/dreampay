@@ -29,9 +29,11 @@ func (s *Server) initializeRoutes() {
 		dreampay.POST("/verification", s.VerificationAccountController)
 		dreampay.POST("/delete/:mobile", s.DeleteAccountController)
 		dreampay.GET("/account", s.GetAllAccountController)
-		dreampay.GET("/transaction", s.GetAllTransactionController)
-		dreampay.GET("/transaction/:id", s.GetTransactionByIDController)
+		dreampay.GET("/transactions", s.GetAllTransactionController)
+		dreampay.GET("/transaction", s.GetTransactionByIDController)
 		dreampay.POST("/transaction", s.CreateTransactionController)
+		dreampay.GET("/money-status", s.GetMoneyStatusController)
+		dreampay.POST("/withdraw", s.CreateWithdrawController)
 	}
 
 }

@@ -29,8 +29,21 @@ definitions:
       account_mobile:
         type: string
     type: object
+  models.MoneyStatus:
+    properties:
+      uang_buyer:
+        type: integer
+      uang_seller:
+        type: integer
+      uang_sisa:
+        type: integer
+    type: object
   models.Transaction:
     properties:
+      ddepositor:
+        $ref: '#/definitions/models.Account'
+      dreceiver:
+        $ref: '#/definitions/models.Account'
       id:
         type: integer
       is_debit:
@@ -44,6 +57,17 @@ definitions:
       transaction_receiver:
         type: string
       transactionName:
+        type: string
+    type: object
+  models.Withdraw:
+    properties:
+      amount:
+        type: integer
+      id:
+        type: integer
+      s:
+        $ref: '#/definitions/models.Account'
+      seller_id:
         type: string
     type: object
 info:
@@ -109,6 +133,21 @@ paths:
       summary: Login Account
       tags:
       - Login Account
+  /api/money-status:
+    get:
+      consumes:
+      - application/json
+      description: API URL For Money Status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MoneyStatus'
+      summary: Money Status
+      tags:
+      - Transaction
   /api/register:
     post:
       consumes:
@@ -135,7 +174,16 @@ paths:
     get:
       consumes:
       - application/json
-      description: API URL For All Transaction
+      description: API URL For Transaction Account Buyer Or Seller
+      parameters:
+      - description: mobile
+        in: query
+        name: receiver
+        type: string
+      - description: mobile
+        in: query
+        name: depositor
+        type: string
       produces:
       - application/json
       responses:
@@ -143,9 +191,9 @@ paths:
           description: Accepted
           schema:
             $ref: '#/definitions/models.Transaction'
-      summary: All Transaction
+      summary: Transaction Per Account Buyer Or Seller
       tags:
-      - All Transaction
+      - Transaction
     post:
       consumes:
       - application/json
@@ -160,24 +208,18 @@ paths:
       produces:
       - application/json
       responses:
-        "202":
-          description: Accepted
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/models.Transaction'
       summary: Create Transaction
       tags:
-      - Create Transaction
-  /api/transaction/{id}:
+      - Transaction
+  /api/transactions:
     get:
       consumes:
       - application/json
-      description: API URL For Transaction Account
-      parameters:
-      - description: mobile
-        in: path
-        name: mobile
-        required: true
-        type: string
+      description: API URL For All Transaction
       produces:
       - application/json
       responses:
@@ -185,9 +227,9 @@ paths:
           description: Accepted
           schema:
             $ref: '#/definitions/models.Transaction'
-      summary: Transaction Per Account
+      summary: All Transaction
       tags:
-      - Transaction Per Account
+      - Transaction
   /api/update/{account_mobile}:
     post:
       consumes:
@@ -232,4 +274,26 @@ paths:
       summary: Verification Account
       tags:
       - Verification Account
+  /api/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Create Withdraw
+      parameters:
+      - description: Transaction Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.Withdraw'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Withdraw'
+      summary: Create Withdraw
+      tags:
+      - Transaction
 swagger: "2.0"

@@ -30,7 +30,7 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 
 	server.DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
 
-		&models.Account{}, &models.Transaction{})
+		&models.Account{}, &models.Transaction{}, &models.Withdraw{})
 
 	server.Router = gin.Default()
 	server.Router.Use(middlewares.CORSMiddleware())

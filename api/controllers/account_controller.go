@@ -11,7 +11,7 @@ import (
 // CreateAccountController ... Create Account
 // @Summary Create New Account
 // @Description API URL For Create New Account
-// @Tags Create Account
+// @Tags Account
 // @Accept  json
 // @Produce  json
 // @Param Account body models.AccountRegister true "Account Data"
@@ -38,7 +38,7 @@ func (s *Server) CreateAccountController(c *gin.Context) {
 // VerificationAccountController ... Verification Account
 // @Summary Verification Account
 // @Description API URL For Verification Account
-// @Tags Verification Account
+// @Tags Account
 // @Accept  json
 // @Produce  json
 // @Param Account body models.AccountVerification true "Account Data"
@@ -71,7 +71,7 @@ func (s *Server) VerificationAccountController(c *gin.Context) {
 // LoginAccountController ... Login Account
 // @Summary Login Account
 // @Description API URL For Login Account
-// @Tags Login Account
+// @Tags Account
 // @Accept  json
 // @Produce  json
 // @Param Account body models.AccountLogin true "Account Data"
@@ -103,7 +103,7 @@ func (s *Server) LoginAccountController(c *gin.Context) {
 // DeleteAccountController ... Delete Account
 // @Summary Delete Account
 // @Description API URL For Delete Account
-// @Tags Delete Account
+// @Tags Account
 // @Accept  json
 // @Produce  json
 // @Param mobile path string true "mobile"
@@ -127,9 +127,9 @@ func (s *Server) DeleteAccountController(c *gin.Context) {
 }
 
 // GetAllAccountController ... List Account
-// @Summary -
-// @Description -
-// @Tags Get Account
+// @Summary Get Account
+// @Description Get Account
+// @Tags Account
 // @Accept  json
 // @Produce  json
 // @Success 200 {array} models.Account
@@ -150,7 +150,7 @@ func (s *Server) GetAllAccountController(c *gin.Context) {
 // LoginAccountController ... Update Account
 // @Summary Update Account
 // @Description API URL For Update Account
-// @Tags Update Account
+// @Tags Account
 // @Accept  json
 // @Produce  json
 // @Param Account body models.Account true "Account Data"

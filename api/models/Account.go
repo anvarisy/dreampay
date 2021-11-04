@@ -1,19 +1,14 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
 type Account struct {
-	AccountMobile string         `gorm:"primaryKey; size 16" json:"account_mobile" form:"account_mobile"`
-	AccountName   string         `json:"account_name" form:"account_name"`
-	AccountStatus string         `json:"account_status" form:"account_status" gorm:"size:2"`
-	IsActive      bool           `json:"is_active" form:"is_active" gorm:"default:false"`
-	CreatedAt     time.Time      `json:"-"`
-	UpdatedAt     time.Time      `json:"-"`
-	DeletedAt     gorm.DeletedAt `gorm:"index" json:"-"`
+	AccountMobile string `gorm:"primaryKey; size 16" json:"account_mobile" form:"account_mobile"`
+	AccountName   string `json:"account_name" form:"account_name"`
+	AccountStatus string `json:"account_status" form:"account_status" gorm:"size:2"`
+	IsActive      bool   `json:"is_active" form:"is_active" gorm:"default:false"`
 }
 type AccountRegister struct {
 	AccountMobile string ` json:"account_mobile" form:"account_mobile"`

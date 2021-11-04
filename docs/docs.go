@@ -115,6 +115,29 @@ var doc = `{
                 }
             }
         },
+        "/api/money-status": {
+            "get": {
+                "description": "API URL For Money Status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Money Status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MoneyStatus"
+                        }
+                    }
+                }
+            }
+        },
         "/api/register": {
             "post": {
                 "description": "API URL For Create New Account",
@@ -151,7 +174,7 @@ var doc = `{
         },
         "/api/transaction": {
             "get": {
-                "description": "API URL For All Transaction",
+                "description": "API URL For Transaction Account Buyer Or Seller",
                 "consumes": [
                     "application/json"
                 ],
@@ -159,9 +182,23 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "All Transaction"
+                    "Transaction"
                 ],
-                "summary": "All Transaction",
+                "summary": "Transaction Per Account Buyer Or Seller",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "mobile",
+                        "name": "receiver",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "mobile",
+                        "name": "depositor",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "202": {
                         "description": "Accepted",
@@ -180,7 +217,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Create Transaction"
+                    "Transaction"
                 ],
                 "summary": "Create Transaction",
                 "parameters": [
@@ -195,8 +232,8 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "202": {
-                        "description": "Accepted",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/models.Transaction"
                         }
@@ -204,9 +241,9 @@ var doc = `{
                 }
             }
         },
-        "/api/transaction/{id}": {
+        "/api/transactions": {
             "get": {
-                "description": "API URL For Transaction Account",
+                "description": "API URL For All Transaction",
                 "consumes": [
                     "application/json"
                 ],
@@ -214,18 +251,9 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Transaction Per Account"
+                    "Transaction"
                 ],
-                "summary": "Transaction Per Account",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "mobile",
-                        "name": "mobile",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
+                "summary": "All Transaction",
                 "responses": {
                     "202": {
                         "description": "Accepted",
@@ -303,6 +331,40 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/api/withdraw": {
+            "post": {
+                "description": "API URL For Create Withdraw",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Create Withdraw",
+                "parameters": [
+                    {
+                        "description": "Transaction Data",
+                        "name": "Account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Withdraw"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Withdraw"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -353,9 +415,29 @@ var doc = `{
                 }
             }
         },
+        "models.MoneyStatus": {
+            "type": "object",
+            "properties": {
+                "uang_buyer": {
+                    "type": "integer"
+                },
+                "uang_seller": {
+                    "type": "integer"
+                },
+                "uang_sisa": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Transaction": {
             "type": "object",
             "properties": {
+                "ddepositor": {
+                    "$ref": "#/definitions/models.Account"
+                },
+                "dreceiver": {
+                    "$ref": "#/definitions/models.Account"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -375,6 +457,23 @@ var doc = `{
                     "type": "string"
                 },
                 "transaction_receiver": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Withdraw": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "s": {
+                    "$ref": "#/definitions/models.Account"
+                },
+                "seller_id": {
                     "type": "string"
                 }
             }
