@@ -22,7 +22,7 @@ var json = jsontime.ConfigWithCustomTimeFormat
 // @Produce  json
 // @Param receiver query string false "mobile"
 // @Param depositor query string false "mobile"
-// @Success 202 {object} models.Transaction
+// @Success 202 {array} models.Transaction
 // @Router /api/transaction [get]
 func (s *Server) GetTransactionByIDController(c *gin.Context) {
 	var err error
@@ -58,13 +58,24 @@ func (s *Server) GetTransactionByIDController(c *gin.Context) {
 		})
 		return
 	}
+	withdraw := []models.Withdraw{}
+	var total_withdraw int64 = 0
+	err_withdraw := s.DB.Where("seller_id = ?", receiver).Find(&withdraw)
+	if err_withdraw != nil {
+		total_withdraw += 0
+	}
+
+	for _, item_with := range withdraw {
+		total_withdraw += item_with.Amount
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
 		"response": map[string]interface{}{
-			"record": trans,
-			"debit":  debit,
-			"credit": credit,
-			"sum":    summary,
+			"record":   trans,
+			"debit":    debit,
+			"credit":   credit,
+			"sum":      summary,
+			"withdraw": withdraw,
 		},
 	})
 }
@@ -233,5 +244,43 @@ func (s *Server) CreateWithdrawController(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"status":   http.StatusCreated,
 		"response": res,
+	})
+}
+
+// GetWithdrawController ... Withdraw History
+// @Summary Withdraw History
+// @Description API URL For Withdraw History
+// @Tags Transaction
+// @Accept  json
+// @Produce  json
+// @Param seller query string false "mobile"
+// @Success 200 {array} models.Withdraw
+// @Router /api/withdraw [get]
+func (s *Server) GetWithdrawController(c *gin.Context) {
+	var err error
+	seller := c.Query("seller")
+	with := []models.Withdraw{}
+	if seller == "" {
+		err = s.DB.Preload(clause.Associations).Find(&with).Error
+	} else {
+		err = s.DB.Where("seller_id = ?", seller).Preload(clause.Associations).Find(&with).Error
+	}
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":   http.StatusNotFound,
+			"response": "Withdraw not found !",
+		})
+		return
+	}
+	var total_withdraw int64 = 0
+	for _, item := range with {
+		total_withdraw += item.Amount
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"response": map[string]interface{}{
+			"record":         &with,
+			"total_withdraw": total_withdraw,
+		},
 	})
 }

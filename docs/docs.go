@@ -25,7 +25,7 @@ var doc = `{
     "paths": {
         "/api/account": {
             "get": {
-                "description": "-",
+                "description": "Get Account",
                 "consumes": [
                     "application/json"
                 ],
@@ -33,9 +33,9 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Get Account"
+                    "Account"
                 ],
-                "summary": "-",
+                "summary": "Get Account",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -59,7 +59,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Delete Account"
+                    "Account"
                 ],
                 "summary": "Delete Account",
                 "parameters": [
@@ -91,7 +91,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Login Account"
+                    "Account"
                 ],
                 "summary": "Login Account",
                 "parameters": [
@@ -148,7 +148,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Create Account"
+                    "Account"
                 ],
                 "summary": "Create New Account",
                 "parameters": [
@@ -203,7 +203,10 @@ var doc = `{
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "$ref": "#/definitions/models.Transaction"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Transaction"
+                            }
                         }
                     }
                 }
@@ -274,7 +277,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Update Account"
+                    "Account"
                 ],
                 "summary": "Update Account",
                 "parameters": [
@@ -308,7 +311,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Verification Account"
+                    "Account"
                 ],
                 "summary": "Verification Account",
                 "parameters": [
@@ -333,6 +336,38 @@ var doc = `{
             }
         },
         "/api/withdraw": {
+            "get": {
+                "description": "API URL For Withdraw History",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Withdraw History",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "mobile",
+                        "name": "seller",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Withdraw"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "API URL For Create Withdraw",
                 "consumes": [

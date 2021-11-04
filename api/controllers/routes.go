@@ -34,6 +34,7 @@ func (s *Server) initializeRoutes() {
 		dreampay.POST("/transaction", s.CreateTransactionController)
 		dreampay.GET("/money-status", s.GetMoneyStatusController)
 		dreampay.POST("/withdraw", s.CreateWithdrawController)
+		dreampay.GET("/withdraw", s.GetWithdrawController)
 	}
 
 }

@@ -77,7 +77,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: '-'
+      description: Get Account
       produces:
       - application/json
       responses:
@@ -87,9 +87,9 @@ paths:
             items:
               $ref: '#/definitions/models.Account'
             type: array
-      summary: '-'
+      summary: Get Account
       tags:
-      - Get Account
+      - Account
   /api/delete/{mobile}:
     post:
       consumes:
@@ -110,7 +110,7 @@ paths:
             $ref: '#/definitions/models.Account'
       summary: Delete Account
       tags:
-      - Delete Account
+      - Account
   /api/login:
     post:
       consumes:
@@ -132,7 +132,7 @@ paths:
             $ref: '#/definitions/models.AccountLogin'
       summary: Login Account
       tags:
-      - Login Account
+      - Account
   /api/money-status:
     get:
       consumes:
@@ -169,7 +169,7 @@ paths:
             $ref: '#/definitions/models.AccountRegister'
       summary: Create New Account
       tags:
-      - Create Account
+      - Account
   /api/transaction:
     get:
       consumes:
@@ -190,7 +190,9 @@ paths:
         "202":
           description: Accepted
           schema:
-            $ref: '#/definitions/models.Transaction'
+            items:
+              $ref: '#/definitions/models.Transaction'
+            type: array
       summary: Transaction Per Account Buyer Or Seller
       tags:
       - Transaction
@@ -251,7 +253,7 @@ paths:
             $ref: '#/definitions/models.Account'
       summary: Update Account
       tags:
-      - Update Account
+      - Account
   /api/verification:
     post:
       consumes:
@@ -273,8 +275,29 @@ paths:
             $ref: '#/definitions/models.AccountVerification'
       summary: Verification Account
       tags:
-      - Verification Account
+      - Account
   /api/withdraw:
+    get:
+      consumes:
+      - application/json
+      description: API URL For Withdraw History
+      parameters:
+      - description: mobile
+        in: query
+        name: seller
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Withdraw'
+            type: array
+      summary: Withdraw History
+      tags:
+      - Transaction
     post:
       consumes:
       - application/json
