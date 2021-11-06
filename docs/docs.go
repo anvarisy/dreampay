@@ -244,6 +244,37 @@ var doc = `{
                 }
             }
         },
+        "/api/transaction/delete/multiple": {
+            "post": {
+                "description": "API URL For Delete Multiple Transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Delete Multiple Transaction",
+                "parameters": [
+                    {
+                        "description": "Transaction Data",
+                        "name": "Account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TransactionID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/transactions": {
             "get": {
                 "description": "API URL For All Transaction",
@@ -493,6 +524,17 @@ var doc = `{
                 },
                 "transaction_receiver": {
                     "type": "string"
+                }
+            }
+        },
+        "models.TransactionID": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

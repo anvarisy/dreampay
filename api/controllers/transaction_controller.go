@@ -71,11 +71,12 @@ func (s *Server) GetTransactionByIDController(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
 		"response": map[string]interface{}{
-			"record":   trans,
-			"debit":    debit,
-			"credit":   credit,
-			"sum":      summary,
-			"withdraw": withdraw,
+			"record":         trans,
+			"debit":          debit,
+			"credit":         credit,
+			"sum":            summary,
+			"withdraw":       withdraw,
+			"total_withdraw": total_withdraw,
 		},
 	})
 }
@@ -233,6 +234,24 @@ func (s *Server) CreateWithdrawController(c *gin.Context) {
 		})
 		return
 	}
+	/*
+		trans := []models.Transaction{}
+		var total int64
+		err_total := s.DB.Where("transaction_receiver = ?", w.SellerID).Preload(clause.Associations).Find(&trans).Error
+		if err_total != nil {
+			total = 0
+		}
+		for _, item := range trans {
+			total += item.TransactionAmount
+		}
+		if total > w.Amount {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status":   http.StatusInternalServerError,
+				"response": "Total withdraw melebihi kapasitas saldo",
+			})
+			return
+		}
+	*/
 	res, err := w.CreateWithdraw(s.DB)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -282,5 +301,53 @@ func (s *Server) GetWithdrawController(c *gin.Context) {
 			"record":         &with,
 			"total_withdraw": total_withdraw,
 		},
+	})
+}
+
+// DeleteMultipleTransaction ... Delete Multiple Transaction
+// @Summary Delete Multiple Transaction
+// @Description API URL For Delete Multiple Transaction
+// @Tags Transaction
+// @Accept  json
+// @Produce  json
+// @Param Account body models.TransactionID true "Transaction Data"
+// @Success 202
+// @Router /api/transaction/delete/multiple [post]
+func (s *Server) DeleteMultipleTransaction(c *gin.Context) {
+	errList := map[string]string{}
+	ids := models.TransactionID{}
+	body, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		errList["Invalid_body"] = "Unable to get request"
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"status": http.StatusUnprocessableEntity,
+			"error":  errList,
+		})
+		return
+	}
+	err = json.Unmarshal(body, &ids)
+	if err != nil {
+		errList["Unmarshal_error"] = err.Error()
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"status": http.StatusUnprocessableEntity,
+			"error":  errList,
+		})
+		return
+	}
+	t := models.Transaction{}
+	for _, item := range ids.ID {
+		err = s.DB.Where("id = ?", item).Delete(&t).Error
+		if err != nil {
+			errList["Internal_Error"] = "Process stoped cause failed to delete account " + item
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": http.StatusInternalServerError,
+				"error":  errList,
+			})
+			return
+		}
+	}
+	c.JSON(http.StatusAccepted, gin.H{
+		"status":   http.StatusAccepted,
+		"response": "Delete Complete",
 	})
 }

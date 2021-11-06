@@ -21,6 +21,10 @@ type Transaction struct {
 	DeletedAt            gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
+type TransactionID struct {
+	ID []string `json:"id"`
+}
+
 type MoneyStatus struct {
 	UangBuyer  int64 `json:"uang_buyer"`
 	UangSeller int64 `json:"uang_seller"`

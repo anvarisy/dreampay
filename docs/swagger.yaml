@@ -59,6 +59,13 @@ definitions:
       transactionName:
         type: string
     type: object
+  models.TransactionID:
+    properties:
+      id:
+        items:
+          type: string
+        type: array
+    type: object
   models.Withdraw:
     properties:
       amount:
@@ -215,6 +222,26 @@ paths:
           schema:
             $ref: '#/definitions/models.Transaction'
       summary: Create Transaction
+      tags:
+      - Transaction
+  /api/transaction/delete/multiple:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Delete Multiple Transaction
+      parameters:
+      - description: Transaction Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.TransactionID'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: ""
+      summary: Delete Multiple Transaction
       tags:
       - Transaction
   /api/transactions:
