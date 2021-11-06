@@ -431,6 +431,37 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/api/withdraw/delete/multiple": {
+            "post": {
+                "description": "API URL For Delete Multiple Withdraw",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Delete Multiple Withdraw",
+                "parameters": [
+                    {
+                        "description": "Transaction Data",
+                        "name": "Account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TransactionID"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": ""
+                    }
+                }
+            }
         }
     },
     "definitions": {

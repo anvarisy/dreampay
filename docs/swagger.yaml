@@ -346,4 +346,24 @@ paths:
       summary: Create Withdraw
       tags:
       - Transaction
+  /api/withdraw/delete/multiple:
+    post:
+      consumes:
+      - application/json
+      description: API URL For Delete Multiple Withdraw
+      parameters:
+      - description: Transaction Data
+        in: body
+        name: Account
+        required: true
+        schema:
+          $ref: '#/definitions/models.TransactionID'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: ""
+      summary: Delete Multiple Withdraw
+      tags:
+      - Transaction
 swagger: "2.0"

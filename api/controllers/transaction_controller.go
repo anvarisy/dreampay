@@ -351,3 +351,51 @@ func (s *Server) DeleteMultipleTransaction(c *gin.Context) {
 		"response": "Delete Complete",
 	})
 }
+
+// DeleteMultipleWithdraw ... Delete Multiple Withdraw
+// @Summary Delete Multiple Withdraw
+// @Description API URL For Delete Multiple Withdraw
+// @Tags Transaction
+// @Accept  json
+// @Produce  json
+// @Param Account body models.TransactionID true "Transaction Data"
+// @Success 202
+// @Router /api/withdraw/delete/multiple [post]
+func (s *Server) DeleteMultipleWithdraw(c *gin.Context) {
+	errList := map[string]string{}
+	ids := models.TransactionID{}
+	body, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		errList["Invalid_body"] = "Unable to get request"
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"status": http.StatusUnprocessableEntity,
+			"error":  errList,
+		})
+		return
+	}
+	err = json.Unmarshal(body, &ids)
+	if err != nil {
+		errList["Unmarshal_error"] = err.Error()
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"status": http.StatusUnprocessableEntity,
+			"error":  errList,
+		})
+		return
+	}
+	t := models.Withdraw{}
+	for _, item := range ids.ID {
+		err = s.DB.Where("id = ?", item).Delete(&t).Error
+		if err != nil {
+			errList["Internal_Error"] = "Process stoped cause failed to delete account " + item
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": http.StatusInternalServerError,
+				"error":  errList,
+			})
+			return
+		}
+	}
+	c.JSON(http.StatusAccepted, gin.H{
+		"status":   http.StatusAccepted,
+		"response": "Delete Complete",
+	})
+}
